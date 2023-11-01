@@ -374,8 +374,8 @@ void Grafo<T,U>::dijkstra(T vertice){
 	for(int j=0; j<cantVertices(); j++){
 			
 			//Para el nodo de inicio
-			if(j == vertice -1) {
-				dist.push_back(0);
+			if(this->vertices[j] == vertice) {
+				dist.push_back(0); //La distancia hacia si mismo es 0
 				pred.push_back(j);
 				nodoEncontrado = true;
 			}
@@ -454,5 +454,30 @@ void Grafo<T,U>::dijkstra(T vertice){
 		}
 
 		std::cout << "\n==========" << std::endl;
+	}
+
+	std::cout << "La secuencia hasta cada nodo desde el nodo " << vertice << " con el menor costo " << std::endl;
+	for (int i = 0; i < S.size(); i++)
+	{
+		int at = pred[i];
+		std::cout << "Nodo " << this->vertices[i] << ": (costo " << std::setw(5) <<dist[i] << "): ";
+		std::stack<T> rt;
+		if(vertice == this->vertices[i]) {
+			std::cout << "Es el nodo de inicio ";
+		}
+		else {
+			rt.push(this->vertices[at]);
+			while (at != pred[at])
+			{
+				at = pred[at];
+				rt.push(this->vertices[at]);
+			}
+			while (!rt.empty()) {
+				T elemento = rt.top();
+				std::cout << elemento << " ";
+				rt.pop();
+			}
+		}
+		std::cout << std::endl;
 	}
 }

@@ -75,7 +75,7 @@ int main(){
 
     grafo.mostrarMatrizAdyacencia();
 
-    grafo.dijkstra(2);
+    grafo.dijkstra(1);
     
     return 0;
 }
