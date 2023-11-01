@@ -3,6 +3,8 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <list>
+#include <iomanip>
 #include <functional>
 
 template <class T, class U>
@@ -16,7 +18,7 @@ void Grafo<T, U>::setVertices(std::vector<T> v){
 }
 
 template <class T, class U>
-void Grafo<T, U>::setAristas(std::vector<std::vector <U>> a){
+void Grafo<T, U>::setAristas(std::vector<std::vector <U> > a){
 	this->matriz_adyacencia = a; // Copia los elementos de a en matriz_adyacencia
 }
 
@@ -26,7 +28,7 @@ std::vector<T> Grafo<T, U>::getVertices(){
 }
 
 template <class T, class U>
-std::vector<std::vector <U>> Grafo<T, U>::getAristas(){
+std::vector<std::vector <U> > Grafo<T, U>::getAristas(){
 	return this->matriz_adyacencia; //Devuelve la matriz de adyacencia
 }
 
@@ -353,6 +355,104 @@ void Grafo<T,U>::prim(T vertice){
 
 
 	}
+}
 
+template <class T, class U>
+void Grafo<T,U>::dijkstra(T vertice){
+	//Falta que en el resultado se imprima el numero del nodo en pred, en vez del consecutivo
 
+	bool nodoEncontrado = false;
+	//Se utilizará -1 para representar vacio e infinito
+
+	//Inicialización de vectores para hacer Dijkstra
+	std::vector<int> dist;
+	std::vector<T> pred;
+	std::vector<T> S;
+	std::vector<T> Q;
+
+	//Esto se hace para estar en el estado inicial segun como se muestra en las diapositivas
+	for(int j=0; j<cantVertices(); j++){
+			
+			//Para el nodo de inicio
+			if(j == vertice -1) {
+				dist.push_back(0);
+				pred.push_back(j);
+				nodoEncontrado = true;
+			}
+			//Para los demás nodos
+			else{
+				dist.push_back(-1);
+				pred.push_back(-1);
+			}
+			Q.push_back(j);
+	}
+
+	if(!nodoEncontrado) {
+		return;
+	}
+
+	//Se repetira hasta que se terminen de comprobar todos los nodos
+	while (Q.size() != 0)
+	{
+		//Escoger el menor nodo disponible
+		int nodo_elegido = -1;
+		int valor_nodo_elegido = -1;
+
+		for(int j=0; j<dist.size(); j++){
+			//Busca el nodo con menor valor
+			if(dist[j] != -1 && (dist[j] <= valor_nodo_elegido || valor_nodo_elegido == -1)) {
+				//Comprueba que el nodo no se halla revisado antes
+				for (int a: Q)
+				{
+					if(j == a) {
+						nodo_elegido = j;
+						valor_nodo_elegido = dist[j];
+					}
+				}
+			}
+		}
+
+		//Para las aristas del vertice,  verifica que el camino hasta ese nodo implica menos costo que el que ya tenga asignado y lo recalcula
+		for(int j=0; j<cantVertices(); j++){
+			if(this->matriz_adyacencia[nodo_elegido][j] > 0) {
+				if(dist[j] > this->matriz_adyacencia[nodo_elegido][j] + valor_nodo_elegido || dist[j] == -1) {
+					dist[j] = this->matriz_adyacencia[nodo_elegido][j] + valor_nodo_elegido;
+					pred[j] = nodo_elegido;
+				}
+			}
+		}
+
+		//Al finalizar el nodo, lo pone en S y lo quita de Q
+		for (int i = 0; i < Q.size(); i++)
+		{
+			if(Q[i] == nodo_elegido) {
+				S.push_back(Q[i]);
+				Q.erase(Q.begin() + i);
+			}
+		}
+		
+		//Prints de cada paso para verificar que todo esta en orden
+		std::cout << "\nDist ";
+		for (int a: dist)
+		{
+			std::cout <<std::setw(5) << a;
+		}
+		std::cout << "\nPred ";
+		for (int a: pred)
+		{
+			std::cout <<std::setw(5) << a;
+		}
+		std::cout << "\nS    ";
+		for (int a: S)
+		{
+			std::cout <<std::setw(5) << a;
+		}
+		std::cout << "\nQ    ";
+		for (int a: Q)
+		{
+			std::cout <<std::setw(5) << a;
+		}
+
+		std::cout << "\n==========" << std::endl;
+	}
 }

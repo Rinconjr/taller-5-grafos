@@ -43,6 +43,8 @@ class Grafo {
         //Implementar recorridos (Prioridad)
         //Recorrido PRIM
         //Recorrido Dijkstra
+        void dijkstra(T vertice);
+
         //Recorrido Euler
         //Recorrido Hamilton
 };
