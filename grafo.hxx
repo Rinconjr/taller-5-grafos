@@ -3,6 +3,7 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <functional>
 
 template <class T, class U>
 Grafo<T, U>::Grafo(){
@@ -141,8 +142,8 @@ bool Grafo<T, U>::insertarArista(T ori, T des, U cos) {
 	return res;
 }
 
-template <class T, class U>
-U Grafo<T, U>::buscarArista(T ori, T des) { //Retorna el valor de la posicion (costo)
+template < class T, class U>
+U Grafo<T,U>::costoArista(T ori, T des){
 	U res = -1; //Si no se encuentra devuelve -1
 	int i_origen = buscarVerticeIndice(ori); //Se busca indice origen
 	int i_destino = buscarVerticeIndice(des); //Se busca inidice destino
@@ -151,8 +152,18 @@ U Grafo<T, U>::buscarArista(T ori, T des) { //Retorna el valor de la posicion (c
 		res = this->matriz_adyacencia[i_origen][i_destino];
 	}
 
-	if(res == 0) { //Si el costo encontrado es 0, no hay arista
-		res = -1;
+	return res;
+}
+
+template <class T, class U>
+bool Grafo<T, U>::buscarArista(T ori, T des) { //Retorna el valor de la posicion (costo)
+	bool res = false;
+
+	int i_origen = buscarVerticeIndice(ori); //Se busca indice origen
+	int i_destino = buscarVerticeIndice(des); //Se busca inidice destino
+
+	if ( i_origen != -1 && i_destino != -1 ) {
+		res = true;
 	}
 
 	return res;
@@ -205,7 +216,7 @@ void Grafo<T, U>::dfs(T vertice) {
 			visitados.push_back(aux); //Marcar como visitado
 
 			for(int i=0; i<cantVertices(); i++){ //Agregar a la pila los adyacentes
-				if(buscarArista(aux, vertices[i]) != -1){
+				if(buscarArista(aux, vertices[i])){
 					pila.push(this->vertices[i]);
 				}
 			}
@@ -242,7 +253,7 @@ void Grafo<T,U>::bfs(T vertice){
 			visitados.push_back(aux); //Marcar como visitado
 
 			for(int i=0; i<cantVertices(); i++){ //Agregar a la cola los adyacentes
-				if(buscarArista(aux, vertices[i]) != -1){
+				if(buscarArista(aux, vertices[i])){
 					cola.push(this->vertices[i]);
 				}
 			}
@@ -275,7 +286,7 @@ std::vector<T> Grafo<T,U>::componenteVertice(T vertice){ //Es el mismo bfs pero 
 			visitados.push_back(aux); //Marcar como visitado
 
 			for(int i=0; i<cantVertices(); i++){ //Agregar a la cola los adyacentes
-				if(buscarArista(aux, vertices[i]) != -1){
+				if(buscarArista(aux, vertices[i])){
 					cola.push(this->vertices[i]);
 				}
 			}
@@ -295,29 +306,50 @@ void Grafo<T,U>::mostrarMatrizAdyacencia(){
 	}
 }
 
-
 template <class T, class U>
 void Grafo<T,U>::prim(T vertice){
 	std::vector<T> verticesVisitados; //Conjunto de vertices visitados
 	std::vector<std::pair<T, T> > aristasUtilizadas; //Conjunto de aristas utilizadas
-	std::vector<T> verticesPosibles = this->componenteVertice(vertice);
+	std::vector<T> verticesPosibles = this->componenteVertice(vertice); //Conjunto de vertices posibles (Total)
+	//std::vector<T> verticesDisponibles = verticesPosibles; //Conjunto de vertices disponibles
+	std::priority_queue<std::pair<T, T>, std::vector<std::pair<T, T>>, std::greater<std::pair<T, T>>> minHeap;
 
 	verticesVisitados.push_back(vertice); //Agregar primer vertice como visitado
 
+	int peso = 0;
+
+	//añadir aristas del vertice a la cola de prioridad
+	for(int i=0; i<verticesPosibles.size(); i++){
+		peso = buscarArista(vertice, verticesPosibles[i]);
+
+		if(peso != -1){
+			minHeap.push(std::make_pair(peso, verticesPosibles[i]));
+		}
+	}
+
 	T actual = vertice;
 
-	int indice = 0;
-
-	std::cout << "Valor actual: " << actual << std::endl;
-
 	while(verticesVisitados.size() != verticesPosibles.size()){
-		//Buscar arista de menor costo
-		//Agregar vertice destino como visitado
-		//Agregar arista a arbol de expansion minima
+		//Buscar arista de menor costo en el min heap
+			//Si el vertice destino no ha sido visitado
+				//Agregar vertice destino como visitado
+				//Agregar arista a arbol de expansion minima
+				//Agregar aristas al min heap
 
+		
+		std::pair<T, T> arista = minHeap.top();
 
-		indice = buscarVerticeIndice(actual);
-		std::cout << "Indice: " << indice << std::endl;
+		minHeap.pop();
+
+		actual = arista.second;
+
+		verticesVisitados.push_back(actual);
+
+		//verticesDisponibles.erase(std::remove(verticesDisponibles.begin(), verticesDisponibles.end(), actual), verticesDisponibles.end());
+
+		aristasUtilizadas.push_back(arista);
+
+		std::cout << "Valor actual: " << actual << std::endl;
 
 
 	}

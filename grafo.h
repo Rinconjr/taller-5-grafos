@@ -27,7 +27,8 @@ class Grafo {
         bool eliminarVertice(T vert);
         
         bool insertarArista(T ori, T des, U cos);
-        U buscarArista(T ori, T des); 
+        bool buscarArista(T ori, T des); 
+        U costoArista(T ori, T des);
         bool eliminarArista(T ori, T des);
 
         void recorridoPlano();
