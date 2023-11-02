@@ -110,10 +110,10 @@ int main( int argc, char* argv[] )
   TCaminos caminosDijkstra = g.dijkstra( 0 );
   
 
-  /* TODO # 7: Imprimir el informe de Prim
+  // TODO # 7: Imprimir el informe de Prim
   TRuta ruta;
   float cosTotal;
-  for ( unsigned int j = 1; j < g.NumeroVertices( ); ++j )
+  for ( unsigned int j = 1; j < g.cantVertices( ); ++j )
   {
     std::cout << "Casa " << j << ":" 
               << g.ObtenerVertice( j ).X << "," << g.ObtenerVertice( j ).Y << std::endl;
@@ -133,7 +133,7 @@ int main( int argc, char* argv[] )
     std::cout << "Comparacion de Prim con Dijkstra: ";
 
   }
-  */
+  
 
   /* TODO # 8: Imprimir el informe de Dijkstra (mismo fomato que informe de Prim)
    */
