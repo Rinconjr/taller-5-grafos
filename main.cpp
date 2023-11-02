@@ -1,4 +1,5 @@
 //g++ -std=c++11 main.cpp -o prueba;
+//g++ -std=c++11 taller_5_grafos.cxx -o taller_5_grafos;
 
 #include <iostream>
 
