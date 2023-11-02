@@ -28,7 +28,7 @@ class Grafo {
         
         bool insertarArista(long ori, long des, U cos);
         bool buscarArista(T ori, T des); 
-        U costoArista(T ori, T des);
+        U ObtenerCosto(unsigned long ori, unsigned long des);
         bool eliminarArista(T ori, T des);
 
         void recorridoPlano();
