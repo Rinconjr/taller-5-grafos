@@ -40,6 +40,8 @@ class Grafo {
 
         void mostrarMatrizAdyacencia();
 
+        T ObtenerVertice(int indice);
+
         //Implementar recorridos (Prioridad)
         //Recorrido PRIM
         //Recorrido Dijkstra

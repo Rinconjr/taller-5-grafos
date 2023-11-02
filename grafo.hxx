@@ -107,6 +107,11 @@ bool Grafo<T, U>::insertarVertice(T vert) {
 }
 
 template <class T, class U>
+T Grafo<T, U>::ObtenerVertice(int indice){
+	return this->vertices[indice];
+}
+
+template <class T, class U>
 bool Grafo<T,U>::eliminarVertice(T ver) {
 	bool res = false;
 	int i_vertice = buscarVerticeIndice(ver); //Se busca indice vertice

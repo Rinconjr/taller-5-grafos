@@ -6,7 +6,7 @@
 #include <sstream>
 
 // TODO # 0: Incluir el archivo cabecera del grafo
-// #include "Grafo.h"
+#include "Grafo.h"
 
 // -------------------------------------------------------------------------
 struct Punto
@@ -20,10 +20,11 @@ struct Punto
     }
 };
 
+
 // -------------------------------------------------------------------------
 
 // TODO # 1: Definir el tipo para un grafo con Puntos como vertices y costos reales
-// typedef Grafo< Punto, float > TGrafo 
+typedef Grafo< Punto, float > TGrafo;
 typedef std::vector< unsigned long > TRuta;
 typedef std::vector< TRuta > TCaminos;
 typedef std::vector< float > TDist;
@@ -41,7 +42,7 @@ int main( int argc, char* argv[] )
   }
 
   // TODO # 2: Declarar el grafo
-  // TGrafo g;
+  TGrafo g;
 
   // Cargar el archivo en un bufer
   std::ifstream in_mesh_stream( argv[ 1 ], std::ifstream::binary );
@@ -68,7 +69,7 @@ int main( int argc, char* argv[] )
     in_mesh >> pnt.X >> pnt.Y;
 
     // TODO # 3: Insertar el Punto en el grafo
-    // g.InsertarVertice( pnt );
+    g.insertarVertice( pnt );
 
   }
 
@@ -80,11 +81,10 @@ int main( int argc, char* argv[] )
     long start, end;
     in_mesh >> start >> end;
 
-    /* TODO # 4: Calcular el costo de la arista, insertarla en el grafo como no dirigida
+    // TODO # 4: Calcular el costo de la arista, insertarla en el grafo como no dirigida
     float cost = g.ObtenerVertice( start ).distanciaA( g.ObtenerVertice( end ) );
-    g.InsertarArista( start, end, cost );
-    g.InsertarArista( end, start, cost );
-    */
+    g.insertarArista( start, end, cost );
+    g.insertarArista( end, start, cost );
 
   }
   delete [] in_mesh_file_buffer;
