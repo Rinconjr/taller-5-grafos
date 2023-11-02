@@ -6,6 +6,7 @@
 #include <list>
 #include <iomanip>
 #include <functional>
+#include <set>
 
 template <class T, class U>
 Grafo<T, U>::Grafo(){
@@ -310,92 +311,61 @@ void Grafo<T,U>::mostrarMatrizAdyacencia(){
 
 template <class T, class U>
 void Grafo<T,U>::prim(T vertice){
-	std::vector<T> verticesVisitados; //Conjunto de vertices visitados
-	std::vector<std::pair<T, T> > aristasUtilizadas; //Conjunto de aristas utilizadas
-	std::vector<T> verticesPosibles = this->componenteVertice(vertice); //Conjunto de vertices posibles (Total)
-	//std::vector<T> verticesDisponibles = verticesPosibles; //Conjunto de vertices disponibles
-	U costoMenor;
-	int indiceVertice;
+	// Crear un conjunto para almacenar los vértices incluidos en el árbol de expansión mínima.
+    std::set<T> arbolExpMin;
+    
+    // Crear una estructura para almacenar las aristas del árbol de expansión mínima y sus costos.
+    std::vector<std::pair<T, T>> aristasExpMin;
+    std::vector<U> costosExpMin;
 
-	if(buscarVerticeIndice(vertice) == -1) {
-		return;
-	}
-	else {
-		verticesVisitados.push_back(vertice);
-	}
+    // Crear una cola de prioridad para almacenar las aristas con sus respectivos costos.
+    std::priority_queue<std::pair<U, std::pair<T, T>>> cola_prioridad;
 
-	costoMenor = 999;
+    // Insertar el vértice inicial en el conjunto.
+    arbolExpMin.insert(vertice);
 
-	T aux1;
+    // Insertar las aristas del vértice inicial en la cola de prioridad.
+    for (int i = 0; i < matriz_adyacencia.size(); i++) {
+        if (vertices[i] == vertice) {
+            for (int j = 0; j < matriz_adyacencia[i].size(); j++) {
+                if (matriz_adyacencia[i][j] != U() && vertices[j] != vertice) {
+                    cola_prioridad.push(std::make_pair(-matriz_adyacencia[i][j], std::make_pair(vertice, vertices[j])));
+                }
+            }
+            break;
+        }
+    }
 
-	T aux2;
+    while (!cola_prioridad.empty()) {
+        U costo = -cola_prioridad.top().first;
+        T origen = cola_prioridad.top().second.first;
+        T destino = cola_prioridad.top().second.second;
+        cola_prioridad.pop();
 
-	indiceVertice = buscarVerticeIndice(vertice);
+        if (arbolExpMin.find(destino) == arbolExpMin.end()) {
+            // Si el destino no está en el árbol de expansión mínima, lo agregamos.
+            arbolExpMin.insert(destino);
+            aristasExpMin.push_back(std::make_pair(origen, destino));
+            costosExpMin.push_back(costo);
 
-	for(int i=0; i<verticesPosibles.size(); i++){
-		if(buscarArista(vertices[indiceVertice], verticesPosibles[i]) && this->matriz_adyacencia[indiceVertice][i] < costoMenor){
-			costoMenor = this->matriz_adyacencia[indiceVertice][i];
-			aux1 = vertices[indiceVertice];
-			aux2 = vertices[i];
-		}
-	}
+            // Insertar las aristas del destino en la cola de prioridad.
+            for (int i = 0; i < matriz_adyacencia.size(); i++) {
+                if (vertices[i] == destino) {
+                    for (int j = 0; j < matriz_adyacencia[i].size(); j++) {
+                        if (matriz_adyacencia[i][j] != U() && arbolExpMin.find(vertices[j]) == arbolExpMin.end()) {
+                            cola_prioridad.push(std::make_pair(-matriz_adyacencia[i][j], std::make_pair(destino, vertices[j])));
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
 
-	aristasUtilizadas.push_back(std::make_pair(aux1, aux2)); //Agregar arista utilizada
-	verticesVisitados.push_back(aux2); //Agregar vertice visitado
-	std::cout<<"ANTES DEL WHILE DE DIEGO\n";
-	//Diego
-	while(verticesVisitados.size() != verticesPosibles.size()){
-		U costoMenor = 9999;
-		std::pair<T,T> menorAristaNoVisitada;
-
-		std::cout << "Prueba 1 " << std::endl;
-		
-		//Para cada vertice ya visitado, comprueba en sus aristas el menor
-		for (T vertice: verticesVisitados) {
-
-			std::cout << "Prueba 2 " << std::endl;
-
-			//En la fila n de la matríz donde n es el indice del vertice
-			for (int i = 0; i < cantVertices(); i++)
-			{
-				std::cout << "Prueba 333333 FOR!!!! 1 " << std::endl;
-				bool visited = false;
-				//Comprueba si de los vertices ya visitados, esa arista se dirije a ese nodo, si es asi lo ignora
-				for (T vert: verticesVisitados)
-				{
-					std::cout << "Prueba 3 PARTE 2 FOR!!!!! " << std::endl;
-					if(vert == i) {
-						visited = true;
-						break;
-					}
-				}
-				
-				//Si el vertice no está visitado, comprueba si de las aristas ya visitadas, es el de menor costo
-				if(!visited) {
-					std::cout<<"PRIMER IFF!!!!\n";
-					if(this->matriz_adyacencia[vertice][i] != 0 && this->matriz_adyacencia[vertice][i] < costoMenor) {
-						std::cout<<"ENTRA AL IF DE MAS ADENTRO!!!!\n";
-						//Asigna valores temporales para irlos calculando
-						costoMenor = this->matriz_adyacencia[vertice][i];
-						menorAristaNoVisitada.first = vertice;
-						menorAristaNoVisitada.second = i;
-					}
-				}
-			}
-		}
-		std::cout<<"SALE DEL FORRR!!!\n";
-		//Cuando encuentra la menor arista, se hacen los push en los vectores
-		verticesVisitados.push_back(menorAristaNoVisitada.second);
-		aristasUtilizadas.push_back(menorAristaNoVisitada);
-	}
-
-	std::cout << "SALE DEL WHILE!!!! " << std::endl;
-
-	//Imprime las aristas utilizadas
-	for (std::pair<T,T> arista: aristasUtilizadas)
-	{
-		std::cout << arista.first << " - " << arista.second << std::endl;
-	}
+    // Imprimir las aristas utilizadas en el árbol de expansión mínima junto con sus costos.
+    for (size_t i = 0; i < aristasExpMin.size(); i++) {
+        std::cout << "Arista: " << aristasExpMin[i].first << " - " << aristasExpMin[i].second << " | Costo: " << costosExpMin[i] << std::endl;
+    }
 	
 }
 
