@@ -134,7 +134,7 @@ bool Grafo<T,U>::eliminarVertice(T ver) {
 }
 
 template <class T, class U>
-bool Grafo<T, U>::insertarArista(T ori, T des, U cos) {
+bool Grafo<T, U>::insertarArista(long ori, long des, U cos) {
 	bool res = false;
 	int i_origen = buscarVerticeIndice(ori); //Se busca indice origen
 	int i_destino = buscarVerticeIndice(des); //Se busca inidice destino

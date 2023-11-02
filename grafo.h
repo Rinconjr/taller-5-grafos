@@ -26,7 +26,7 @@ class Grafo {
         bool insertarVertice(T vert);
         bool eliminarVertice(T vert);
         
-        bool insertarArista(T ori, T des, U cos);
+        bool insertarArista(long ori, long des, U cos);
         bool buscarArista(T ori, T des); 
         U costoArista(T ori, T des);
         bool eliminarArista(T ori, T des);
