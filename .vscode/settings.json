@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.md": "markdown",
         "array": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
@@ -49,6 +50,7 @@
         "typeinfo": "cpp",
         "list": "cpp",
         "iomanip": "cpp",
-        "ctime": "cpp"
+        "ctime": "cpp",
+        "numbers": "cpp"
     }
 }

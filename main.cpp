@@ -6,7 +6,7 @@
 
 int main(){
     //Crear grafo   
-    Grafo<int, int> grafo;
+    Grafo<char, int> grafo;
 
 
     grafo.insertarVertice('a');
@@ -19,24 +19,54 @@ int main(){
     grafo.insertarVertice('h');
     grafo.insertarVertice('i');
 
+    //a
     grafo.insertarArista('a', 'b', 4);
     grafo.insertarArista('b', 'a', 4);
     grafo.insertarArista('a', 'h', 8);
     grafo.insertarArista('h', 'a', 8);
-    grafo.insertarArista('b', 'c', 8);
-    grafo.insertarArista('b', 'h', 11);
-    grafo.insertarArista('c', 'i', 2);
-    grafo.insertarArista('i', 'h', 7);
-    grafo.insertarArista('g', , 90);
-    grafo.insertarArista(1, 2, 90);
-    grafo.insertarArista(1, 2, 90);
-    grafo.insertarArista(1, 2, 90);
-    grafo.insertarArista(1, 2, 90);
-    grafo.insertarArista(1, 2, 90);
-    grafo.insertarArista(1, 2, 90);
-    grafo.insertarArista(1, 2, 90);
 
-    grafo.mostrarMatrizAdyacencia();
+    //b
+    grafo.insertarArista('b', 'c', 8);
+    grafo.insertarArista('c', 'b', 8);
+    grafo.insertarArista('b', 'h', 11);
+    grafo.insertarArista('h', 'b', 11);
+
+    //c
+    grafo.insertarArista('c', 'i', 2);
+    grafo.insertarArista('i', 'c', 2);
+    grafo.insertarArista('c', 'd', 7);
+    grafo.insertarArista('d', 'c', 7);
+    grafo.insertarArista('c','f', 4);
+    grafo.insertarArista('f', 'c', 4);
+
+    //d
+    grafo.insertarArista('d', 'e', 9);
+    grafo.insertarArista('e', 'd', 9);
+    grafo.insertarArista('d', 'f', 14);
+    grafo.insertarArista('f', 'd', 14);
+
+    //e
+    grafo.insertarArista('e', 'f', 10);
+    grafo.insertarArista('f', 'e', 10);
+
+    //f
+    grafo.insertarArista('f', 'g', 2);
+    grafo.insertarArista('g', 'f', 2);
+
+    //g
+    grafo.insertarArista('g', 'i', 6);
+    grafo.insertarArista('i', 'g', 6);
+    grafo.insertarArista('g', 'h', 1);
+    grafo.insertarArista('h', 'g', 1);
+
+    //h
+    grafo.insertarArista('h', 'i', 7);
+    grafo.insertarArista('i', 'h', 7);
+
+
+    //grafo.mostrarMatrizAdyacencia();
+
+    grafo.prim('a');
 
 
     /*

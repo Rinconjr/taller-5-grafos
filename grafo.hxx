@@ -347,17 +347,23 @@ void Grafo<T,U>::prim(T vertice){
 	while(verticesVisitados.size() != verticesPosibles.size()){
 		U costoMenor = 9999;
 		std::pair<T,T> menorAristaNoVisitada;
+
+		std::cout << "Prueba 1 " << std::endl;
 		
 		//Para cada vertice ya visitado, comprueba en sus aristas el menor
 		for (T vertice: verticesVisitados) {
 
+			std::cout << "Prueba 2 " << std::endl;
+
 			//En la fila n de la matríz donde n es el indice del vertice
-			for (int i = 0; i < cantVertices; i++)
+			for (int i = 0; i < cantVertices(); i++)
 			{
+				std::cout << "Prueba 3 FOR!!!! 1 " << std::endl;
 				bool visited = false;
 				//Comprueba si de los vertices ya visitados, esa arista se dirije a ese nodo, si es asi lo ignora
 				for (T vert: verticesVisitados)
 				{
+					std::cout << "Prueba 3 PARTE 2 FOR!!!!! " << std::endl;
 					if(vert == i) {
 						visited = true;
 						break;
@@ -381,9 +387,13 @@ void Grafo<T,U>::prim(T vertice){
 		aristasUtilizadas.push_back(menorAristaNoVisitada);
 	}
 
+	std::cout << "Prueba " << std::endl;
 
-
-	
+	//Imprime las aristas utilizadas
+	for (std::pair<T,T> arista: aristasUtilizadas)
+	{
+		std::cout << arista.first << " - " << arista.second << std::endl;
+	}
 	
 }
 
