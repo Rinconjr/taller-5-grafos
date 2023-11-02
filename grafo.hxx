@@ -312,7 +312,7 @@ void Grafo<T,U>::mostrarMatrizAdyacencia(){
 }
 
 template <class T, class U>
-void Grafo<T,U>::prim(T vertice){
+std::vector<std::vector<unsigned long>>Grafo<T,U>::prim(unsigned long ori){
 	// Crear un conjunto para almacenar los vértices incluidos en el árbol de expansión mínima.
     std::set<T> arbolExpMin;
     

@@ -36,7 +36,7 @@ class Grafo {
         void bfs(T vertice);
 
         std::vector<T> componenteVertice(T vertice);
-        void prim(T vertice);
+        std::vector<std::vector<unsigned long>>prim(unsigned long ori);
 
         void mostrarMatrizAdyacencia();
 

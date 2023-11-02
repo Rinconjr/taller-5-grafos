@@ -106,7 +106,7 @@ int main( int argc, char* argv[] )
   
 
   // TODO # 6: Encontrar las rutas de costo minimo usando los algoritmos requeridos
-  //TCaminos caminosPrim = g.prim( 0 );
+  TCaminos caminosPrim = g.prim( 0 );
   TCaminos caminosDijkstra = g.dijkstra( 0 );
   
 
