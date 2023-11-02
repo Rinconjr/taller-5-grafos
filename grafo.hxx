@@ -314,47 +314,77 @@ void Grafo<T,U>::prim(T vertice){
 	std::vector<std::pair<T, T> > aristasUtilizadas; //Conjunto de aristas utilizadas
 	std::vector<T> verticesPosibles = this->componenteVertice(vertice); //Conjunto de vertices posibles (Total)
 	//std::vector<T> verticesDisponibles = verticesPosibles; //Conjunto de vertices disponibles
-	std::priority_queue<std::pair<T, T>, std::vector<std::pair<T, T>>, std::greater<std::pair<T, T>>> minHeap;
+	U costoMenor;
+	int indiceVertice;
 
-	verticesVisitados.push_back(vertice); //Agregar primer vertice como visitado
+	if(buscarVerticeIndice(vertice) == -1) {
+		return;
+	}
+	else {
+		verticesVisitados.push_back(vertice);
+	}
 
-	int peso = 0;
+	costoMenor = 999;
 
-	//añadir aristas del vertice a la cola de prioridad
+	T aux1;
+
+	T aux2;
+
+	indiceVertice = buscarVerticeIndice(vertice);
+
 	for(int i=0; i<verticesPosibles.size(); i++){
-		peso = buscarArista(vertice, verticesPosibles[i]);
-
-		if(peso != -1){
-			minHeap.push(std::make_pair(peso, verticesPosibles[i]));
+		if(buscarArista(vertices[indiceVertice], verticesPosibles[i]) && this->matriz_adyacencia[indiceVertice][i] < costoMenor){
+			costoMenor = this->matriz_adyacencia[indiceVertice][i];
+			aux1 = vertices[indiceVertice];
+			aux2 = vertices[i];
 		}
 	}
 
-	T actual = vertice;
+	aristasUtilizadas.push_back(std::make_pair(aux1, aux2)); //Agregar arista utilizada
+	verticesVisitados.push_back(aux2); //Agregar vertice visitado
 
+	//Diego
 	while(verticesVisitados.size() != verticesPosibles.size()){
-		//Buscar arista de menor costo en el min heap
-			//Si el vertice destino no ha sido visitado
-				//Agregar vertice destino como visitado
-				//Agregar arista a arbol de expansion minima
-				//Agregar aristas al min heap
-
+		U costoMenor = 9999;
+		std::pair<T,T> menorAristaNoVisitada;
 		
-		std::pair<T, T> arista = minHeap.top();
+		//Para cada vertice ya visitado, comprueba en sus aristas el menor
+		for (T vertice: verticesVisitados) {
 
-		minHeap.pop();
-
-		actual = arista.second;
-
-		verticesVisitados.push_back(actual);
-
-		//verticesDisponibles.erase(std::remove(verticesDisponibles.begin(), verticesDisponibles.end(), actual), verticesDisponibles.end());
-
-		aristasUtilizadas.push_back(arista);
-
-		std::cout << "Valor actual: " << actual << std::endl;
-
-
+			//En la fila n de la matríz donde n es el indice del vertice
+			for (int i = 0; i < cantVertices; i++)
+			{
+				bool visited = false;
+				//Comprueba si de los vertices ya visitados, esa arista se dirije a ese nodo, si es asi lo ignora
+				for (T vert: verticesVisitados)
+				{
+					if(vert == i) {
+						visited = true;
+						break;
+					}
+				}
+				
+				//Si el vertice no está visitado, comprueba si de las aristas ya visitadas, es el de menor costo
+				if(!visited) {
+					if(this->matriz_adyacencia[vertice][i] != 0 && this->matriz_adyacencia[vertice][i] < costoMenor) {
+						
+						//Asigna valores temporales para irlos calculando
+						costoMenor = this->matriz_adyacencia[vertice][i];
+						menorAristaNoVisitada.first = vertice;
+						menorAristaNoVisitada.second = i;
+					}
+				}
+			}
+		}
+		//Cuando encuentra la menor arista, se hacen los push en los vectores
+		verticesVisitados.push_back(menorAristaNoVisitada.second);
+		aristasUtilizadas.push_back(menorAristaNoVisitada);
 	}
+
+
+
+	
+	
 }
 
 template <class T, class U>

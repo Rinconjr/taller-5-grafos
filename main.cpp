@@ -8,6 +8,38 @@ int main(){
     //Crear grafo   
     Grafo<int, int> grafo;
 
+
+    grafo.insertarVertice('a');
+    grafo.insertarVertice('b');
+    grafo.insertarVertice('c');
+    grafo.insertarVertice('d');
+    grafo.insertarVertice('e');
+    grafo.insertarVertice('f');
+    grafo.insertarVertice('g');
+    grafo.insertarVertice('h');
+    grafo.insertarVertice('i');
+
+    grafo.insertarArista('a', 'b', 4);
+    grafo.insertarArista('b', 'a', 4);
+    grafo.insertarArista('a', 'h', 8);
+    grafo.insertarArista('h', 'a', 8);
+    grafo.insertarArista('b', 'c', 8);
+    grafo.insertarArista('b', 'h', 11);
+    grafo.insertarArista('c', 'i', 2);
+    grafo.insertarArista('i', 'h', 7);
+    grafo.insertarArista('g', , 90);
+    grafo.insertarArista(1, 2, 90);
+    grafo.insertarArista(1, 2, 90);
+    grafo.insertarArista(1, 2, 90);
+    grafo.insertarArista(1, 2, 90);
+    grafo.insertarArista(1, 2, 90);
+    grafo.insertarArista(1, 2, 90);
+    grafo.insertarArista(1, 2, 90);
+
+    grafo.mostrarMatrizAdyacencia();
+
+
+    /*
     grafo.insertarVertice(1);
     grafo.insertarVertice(2);
     grafo.insertarVertice(3);
@@ -54,8 +86,9 @@ int main(){
     grafo.insertarArista(8, 5, 50);
     grafo.insertarArista(8, 6, 64);
     grafo.insertarArista(8, 7, 90);
+    */
     
-
+   /*
     std::vector<int> prueba = grafo.componenteVertice(1);
 
     std::cout << "Componente nodo 1:" << std::endl;
@@ -76,6 +109,6 @@ int main(){
     grafo.mostrarMatrizAdyacencia();
 
     grafo.dijkstra(1);
-    
+    */
     return 0;
 }
