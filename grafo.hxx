@@ -372,9 +372,9 @@ void Grafo<T,U>::prim(T vertice){
 }
 
 template <class T, class U>
-void Grafo<T,U>::dijkstra(T vertice){
+std::vector<std::vector<T>> Grafo<T,U>::dijkstra(T vertice){
 	//Falta que en el resultado se imprima el numero del nodo en pred, en vez del consecutivo
-
+	std::vector<std::vector<T>> rutaVertices;
 	bool nodoEncontrado = false;
 	//Se utilizará -1 para representar vacio e infinito
 
@@ -445,6 +445,7 @@ void Grafo<T,U>::dijkstra(T vertice){
 			}
 		}
 		
+		/*
 		//Prints de cada paso para verificar que todo esta en orden
 		std::cout << "\nDist ";
 		for (int a: dist)
@@ -468,30 +469,39 @@ void Grafo<T,U>::dijkstra(T vertice){
 		}
 
 		std::cout << "\n==========" << std::endl;
+		*/
 	}
 
 	std::cout << "La secuencia hasta cada nodo desde el nodo " << vertice << " con el menor costo " << std::endl;
 	for (int i = 0; i < S.size(); i++)
 	{
 		int at = pred[i];
-		std::cout << "Nodo " << this->vertices[i] << ": (costo " << std::setw(5) <<dist[i] << "): ";
-		std::stack<T> rt;
+		//std::cout << "Nodo " << this->vertices[i] << ": (costo " << std::setw(5) <<dist[i] << "): ";
+
+		/*
 		if(vertice == this->vertices[i]) {
 			std::cout << "Es el nodo de inicio ";
 		}
+		*/
 		else {
+			std::stack<T> rt;
+			std::vector<T>ruta;
+			
 			rt.push(this->vertices[at]);
 			while (at != pred[at])
 			{
 				at = pred[at];
 				rt.push(this->vertices[at]);
 			}
+			
 			while (!rt.empty()) {
-				T elemento = rt.top();
-				std::cout << elemento << " ";
+				ruta.push_back(rt.top());
 				rt.pop();
 			}
+			rutaVertices.push_back(ruta);
 		}
-		std::cout <<this->vertices[i] << std::endl;
+		//std::cout <<this->vertices[i] << std::endl;
 	}
+
+	return rutaVertices;
 }
