@@ -478,6 +478,6 @@ void Grafo<T,U>::dijkstra(T vertice){
 				rt.pop();
 			}
 		}
-		std::cout << std::endl;
+		std::cout <<this->vertices[i] << std::endl;
 	}
 }
