@@ -92,23 +92,23 @@ int main( int argc, char* argv[] )
   std::cout << "Porteria: " 
             << g.ObtenerVertice( 0 ).X << "," << g.ObtenerVertice( 0 ).Y << std::endl;
 
-  /* TODO # 5: Calcular distancias lineales (distancia Euclidiana)
+  //TODO # 5: Calcular distancias lineales (distancia Euclidiana)
   unsigned long s_id = 0;
   float dist_s_e = 0.0;
   TDist distLineales;
   
-  for ( unsigned int j = 1; j < g.NumeroVertices( ); ++j )
+  for ( unsigned int j = 1; j < g.cantVertices( ); ++j )
   {
     dist_s_e = g.ObtenerVertice( s_id ).distanciaA( g.ObtenerVertice( j ) );
     distLineales.push_back( dist_s_e );
       
   }
-  */
+  
 
-  /* TODO # 6: Encontrar las rutas de costo minimo usando los algoritmos requeridos
-  TCaminos caminosPrim = g.Prim( 0 );
-  TCaminos caminosDijkstra = g.Dijkstra( 0 );
-  */
+  // TODO # 6: Encontrar las rutas de costo minimo usando los algoritmos requeridos
+  TCaminos caminosPrim = g.prim( 0 );
+  TCaminos caminosDijkstra = g.dijkstra( 0 );
+  
 
   /* TODO # 7: Imprimir el informe de Prim
   TRuta ruta;
