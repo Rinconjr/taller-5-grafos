@@ -372,17 +372,17 @@ void Grafo<T,U>::prim(T vertice){
 }
 
 template <class T, class U>
-std::vector<std::vector<T>> Grafo<T,U>::dijkstra(T vertice){
+std::vector<std::vector<unsigned long>> Grafo<T,U>::dijkstra(int vertice){
 	//Falta que en el resultado se imprima el numero del nodo en pred, en vez del consecutivo
-	std::vector<std::vector<T>> rutaVertices;
+	std::vector<std::vector<unsigned long>> rutaVertices;
 	bool nodoEncontrado = false;
 	//Se utilizará -1 para representar vacio e infinito
 
 	//Inicialización de vectores para hacer Dijkstra
-	std::vector<int> dist;
-	std::vector<T> pred;
-	std::vector<T> S;
-	std::vector<T> Q;
+	std::vector<unsigned long> dist;
+	std::vector<int> pred;
+	std::vector<int> S;
+	std::vector<int> Q;
 
 	//Esto se hace para estar en el estado inicial segun como se muestra en las diapositivas
 	for(int j=0; j<cantVertices(); j++){
@@ -402,14 +402,14 @@ std::vector<std::vector<T>> Grafo<T,U>::dijkstra(T vertice){
 	}
 
 	if(!nodoEncontrado) {
-		return;
+		return rutaVertices;
 	}
 
 	//Se repetira hasta que se terminen de comprobar todos los nodos
 	while (Q.size() != 0)
 	{
 		//Escoger el menor nodo disponible
-		int nodo_elegido = -1;
+		T nodo_elegido;
 		int valor_nodo_elegido = -1;
 
 		for(int j=0; j<dist.size(); j++){
@@ -478,14 +478,15 @@ std::vector<std::vector<T>> Grafo<T,U>::dijkstra(T vertice){
 		int at = pred[i];
 		//std::cout << "Nodo " << this->vertices[i] << ": (costo " << std::setw(5) <<dist[i] << "): ";
 
-		/*
+		std::stack<unsigned long> rt;
+		std::vector<unsigned long>ruta;
+		
 		if(vertice == this->vertices[i]) {
-			std::cout << "Es el nodo de inicio ";
+			//std::cout << "Es el nodo de inicio ";
+			ruta.push_back(vertice);
 		}
-		*/
 		else {
-			std::stack<T> rt;
-			std::vector<T>ruta;
+			
 			
 			rt.push(this->vertices[at]);
 			while (at != pred[at])
@@ -498,8 +499,8 @@ std::vector<std::vector<T>> Grafo<T,U>::dijkstra(T vertice){
 				ruta.push_back(rt.top());
 				rt.pop();
 			}
-			rutaVertices.push_back(ruta);
 		}
+		rutaVertices.push_back(ruta);
 		//std::cout <<this->vertices[i] << std::endl;
 	}
 
