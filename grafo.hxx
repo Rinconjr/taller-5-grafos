@@ -342,7 +342,7 @@ void Grafo<T,U>::prim(T vertice){
 
 	aristasUtilizadas.push_back(std::make_pair(aux1, aux2)); //Agregar arista utilizada
 	verticesVisitados.push_back(aux2); //Agregar vertice visitado
-
+	std::cout<<"ANTES DEL WHILE DE DIEGO\n";
 	//Diego
 	while(verticesVisitados.size() != verticesPosibles.size()){
 		U costoMenor = 9999;
@@ -358,7 +358,7 @@ void Grafo<T,U>::prim(T vertice){
 			//En la fila n de la matríz donde n es el indice del vertice
 			for (int i = 0; i < cantVertices(); i++)
 			{
-				std::cout << "Prueba 3 FOR!!!! 1 " << std::endl;
+				std::cout << "Prueba 333333 FOR!!!! 1 " << std::endl;
 				bool visited = false;
 				//Comprueba si de los vertices ya visitados, esa arista se dirije a ese nodo, si es asi lo ignora
 				for (T vert: verticesVisitados)
@@ -372,8 +372,9 @@ void Grafo<T,U>::prim(T vertice){
 				
 				//Si el vertice no está visitado, comprueba si de las aristas ya visitadas, es el de menor costo
 				if(!visited) {
+					std::cout<<"PRIMER IFF!!!!\n";
 					if(this->matriz_adyacencia[vertice][i] != 0 && this->matriz_adyacencia[vertice][i] < costoMenor) {
-						
+						std::cout<<"ENTRA AL IF DE MAS ADENTRO!!!!\n";
 						//Asigna valores temporales para irlos calculando
 						costoMenor = this->matriz_adyacencia[vertice][i];
 						menorAristaNoVisitada.first = vertice;
@@ -382,12 +383,13 @@ void Grafo<T,U>::prim(T vertice){
 				}
 			}
 		}
+		std::cout<<"SALE DEL FORRR!!!\n";
 		//Cuando encuentra la menor arista, se hacen los push en los vectores
 		verticesVisitados.push_back(menorAristaNoVisitada.second);
 		aristasUtilizadas.push_back(menorAristaNoVisitada);
 	}
 
-	std::cout << "Prueba " << std::endl;
+	std::cout << "SALE DEL WHILE!!!! " << std::endl;
 
 	//Imprime las aristas utilizadas
 	for (std::pair<T,T> arista: aristasUtilizadas)
