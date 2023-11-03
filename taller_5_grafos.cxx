@@ -137,6 +137,7 @@ int main( int argc, char* argv[] )
 
   /* TODO # 8: Imprimir el informe de Dijkstra (mismo fomato que informe de Prim)
    */
+  g.mostrarMatrizAdyacencia();
 
   return( 0 );
 }

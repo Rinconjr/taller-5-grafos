@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <functional>
 #include <set>
+#include <limits>
 
 template <class T, class U>
 Grafo<T, U>::Grafo(){
@@ -313,49 +314,44 @@ void Grafo<T,U>::mostrarMatrizAdyacencia(){
 
 template <class T, class U>
 std::vector<std::vector<unsigned long>>Grafo<T,U>::prim(unsigned long ori){
-	 // Crear un vector para almacenar los vértices ya incluidos en el árbol de expansión mínimo.
-    std::vector<bool> incluido(vertices.size(), false);
+	int n = vertices.size();  // número de nodos
 
-    // Crear un vector para almacenar los vértices padre en el árbol de expansión mínimo.
-    std::vector<unsigned long> padre(vertices.size(), 0);
+    std::vector<U> cost(n, std::numeric_limits<U>::max());  // costo mínimo de origen a i
+    std::vector<unsigned long> prev(n, std::numeric_limits<unsigned long>::max());  // nodo anterior en el camino óptimo
+    std::vector<bool> inMST(n, false);  // si el nodo i está en el MST
 
-    // Crear un vector para almacenar los costos de las aristas hacia los vértices ya incluidos en el árbol.
-    std::vector<U> costoMinimo(vertices.size(), std::numeric_limits<U>::max());
+    std::priority_queue<std::pair<U, unsigned long>, std::vector<std::pair<U, unsigned long>>, std::greater<std::pair<U, unsigned long>>> pq;
+    cost[ori] = 0;
+    pq.push({0, ori});
 
-    // Almacenar el vértice de origen y establecer su costo mínimo en 0.
-    costoMinimo[ori] = 0;
+    while (!pq.empty()) {
+        unsigned long u = pq.top().second;
+        pq.pop();
 
-    // Crear un vector para almacenar el árbol de expansión mínimo.
-    std::vector<std::vector<unsigned long>> arbolExpMin(vertices.size());
+        inMST[u] = true;
 
-    for (int i = 0; i < vertices.size(); ++i) {
-        unsigned long u = -1;
-        // Encontrar el vértice con el costo mínimo no incluido en el árbol.
-        for (unsigned long j = 0; j < vertices.size(); ++j) {
-            if (!incluido[j] && (u == -1 || costoMinimo[j] < costoMinimo[u])) {
-                u = j;
-            }
-        }
-
-        // Marcar el vértice u como incluido en el árbol.
-        incluido[u] = true;
-
-        // Agregar la arista al árbol de expansión mínimo.
-        if (padre[u] != u) {
-            arbolExpMin[padre[u]].push_back(u);
-            arbolExpMin[u].push_back(padre[u]);
-        }
-
-        // Actualizar los costos mínimos y los vértices padres.
-        for (unsigned long v = 0; v < vertices.size(); ++v) {
-            if (!incluido[v] && matriz_adyacencia[u][v] < costoMinimo[v]) {
-                costoMinimo[v] = matriz_adyacencia[u][v];
-                padre[v] = u;
+        for (unsigned long v = 0; v < n; ++v) {
+            if (matriz_adyacencia[u][v] && !inMST[v] && matriz_adyacencia[u][v] < cost[v]) {
+                cost[v] = matriz_adyacencia[u][v];
+                pq.push({cost[v], v});
+                prev[v] = u;
             }
         }
     }
 
-    return arbolExpMin;
+    std::vector<std::vector<unsigned long>> mst(n);
+    for (unsigned long i = 0; i < n; ++i) {
+        if (prev[i] != std::numeric_limits<unsigned long>::max() || i == ori) {
+            unsigned long nodo = i;
+            while (nodo != std::numeric_limits<unsigned long>::max()) {
+                mst[i].push_back(nodo);
+                nodo = prev[nodo];
+            }
+            // std::reverse(mst[i].begin(), mst[i].end());
+        }
+    }
+
+    return mst;
 }
 
 template <class T, class U>
