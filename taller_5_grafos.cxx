@@ -110,7 +110,7 @@ int main( int argc, char* argv[] )
 
   // TODO # 6: Encontrar las rutas de costo minimo usando los algoritmos requeridos
   TCaminos caminosPrim = g.prim( 0 );
-  //TCaminos caminosDijkstra = g.dijkstra( 0 );
+  
   
 
   // TODO # 7: Imprimir el informe de Prim
@@ -139,7 +139,7 @@ int main( int argc, char* argv[] )
   
 
   // TODO # 8: Imprimir el informe de Dijkstra (mismo fomato que informe de Prim)
-   
+  TCaminos caminosDijkstra = g.dijkstra( 0 ); 
  
 
   return( 0 );

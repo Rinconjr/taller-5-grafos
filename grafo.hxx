@@ -355,7 +355,7 @@ std::vector<std::vector<unsigned long>>Grafo<T,U>::prim(unsigned long ori){
 }
 
 template <class T, class U>
-std::vector<std::vector<unsigned long>> Grafo<T,U>::dijkstra(int vertice){
+std::vector<std::vector<unsigned long>> Grafo<T,U>::dijkstra(unsigned long vertice){
 	//Falta que en el resultado se imprima el numero del nodo en pred, en vez del consecutivo
 	std::vector<std::vector<unsigned long>> rutaVertices;
 	bool nodoEncontrado = false;
@@ -363,15 +363,15 @@ std::vector<std::vector<unsigned long>> Grafo<T,U>::dijkstra(int vertice){
 
 	//Inicialización de vectores para hacer Dijkstra
 	std::vector<unsigned long> dist;
-	std::vector<int> pred;
-	std::vector<int> S;
-	std::vector<int> Q;
+	std::vector<unsigned long> pred;
+	std::vector<unsigned long> S;
+	std::vector<unsigned long> Q;
 
 	//Esto se hace para estar en el estado inicial segun como se muestra en las diapositivas
 	for(int j=0; j<cantVertices(); j++){
 			
 			//Para el nodo de inicio
-			if(this->vertices[j] == vertice) {
+			if(j == vertice) {
 				dist.push_back(0); //La distancia hacia si mismo es 0
 				pred.push_back(j);
 				nodoEncontrado = true;
@@ -392,14 +392,14 @@ std::vector<std::vector<unsigned long>> Grafo<T,U>::dijkstra(int vertice){
 	while (Q.size() != 0)
 	{
 		//Escoger el menor nodo disponible
-		T nodo_elegido;
-		int valor_nodo_elegido = -1;
+		unsigned long nodo_elegido;
+		unsigned long valor_nodo_elegido = -1;
 
-		for(int j=0; j<dist.size(); j++){
+		for(unsigned long j=0; j<dist.size(); j++){
 			//Busca el nodo con menor valor
 			if(dist[j] != -1 && (dist[j] <= valor_nodo_elegido || valor_nodo_elegido == -1)) {
 				//Comprueba que el nodo no se halla revisado antes
-				for (int a: Q)
+				for (unsigned long a: Q)
 				{
 					if(j == a) {
 						nodo_elegido = j;
@@ -459,32 +459,46 @@ std::vector<std::vector<unsigned long>> Grafo<T,U>::dijkstra(int vertice){
 	for (int i = 0; i < S.size(); i++)
 	{
 		int at = pred[i];
-		//std::cout << "Nodo " << this->vertices[i] << ": (costo " << std::setw(5) <<dist[i] << "): ";
+		std::cout << "Nodo " << this->vertices[i].X << " " << this->vertices[i].Y << ": (costo " << std::setw(5) <<dist[i] << "): ";
 
 		std::stack<unsigned long> rt;
-		std::vector<unsigned long>ruta;
-		
-		if(vertice == this->vertices[i]) {
-			//std::cout << "Es el nodo de inicio ";
-			ruta.push_back(vertice);
+		//std::vector<unsigned long>ruta;
+
+		std::vector<std::pair<unsigned long, unsigned long>> ruta;
+		std::pair<unsigned long, unsigned long> temp;
+		if(vertice == i) {
+			std::cout << "Es el nodo de inicio ";
+			temp.first = this->vertices[i].X;
+			temp.second = this->vertices[i].Y;
+			ruta.push_back(temp);
 		}
 		else {
 			
 			
-			rt.push(this->vertices[at]);
+			rt.push(at);
 			while (at != pred[at])
 			{
 				at = pred[at];
-				rt.push(this->vertices[at]);
+				rt.push(at);
 			}
 			
 			while (!rt.empty()) {
-				ruta.push_back(rt.top());
+				temp.first = this->vertices[rt.top()].X;
+				temp.second = this->vertices[rt.top()].Y;
+				ruta.push_back(temp);
 				rt.pop();
+				
 			}
+			temp.first = this->vertices[i].X;
+			temp.second = this->vertices[i].Y;
+			ruta.push_back(temp);
 		}
-		rutaVertices.push_back(ruta);
-		//std::cout <<this->vertices[i] << std::endl;
+		
+		//Inprime los resultados
+		for(std::pair<unsigned long, unsigned long> a: ruta) {
+			std::cout << a.first << " " << a.second << " - ";
+		}
+		std::cout <<std::endl;
 	}
 
 	return rutaVertices;
