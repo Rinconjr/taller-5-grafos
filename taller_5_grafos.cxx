@@ -1,3 +1,6 @@
+//Compilacion: g++ -std=c++11 taller_5_grafos.cxx -o prueba
+//Ejecucion: ./prueba archivo_entrada
+
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
@@ -115,12 +118,12 @@ int main( int argc, char* argv[] )
   float cosTotal;
   for ( unsigned int j = 1; j < g.cantVertices( ); ++j )
   {
-    std::cout << "Casa " << j << ":" 
+    std::cout << "\nCasa " << j << ":" 
               << g.ObtenerVertice( j ).X << "," << g.ObtenerVertice( j ).Y << std::endl;
     std::cout << "Distancia lineal a porteria: " << distLineales[ j-1 ] << std::endl;
 
     std::cout << "Camino segun algoritmo de Prim: ";
-    ruta = caminosPrim[ j-1 ];
+    ruta = caminosPrim[ j ];
     for( unsigned int i = 0; i < ruta.size( ); ++i )
       std::cout << ruta[ i ] << " - ";
     std::cout << std::endl;
@@ -130,14 +133,14 @@ int main( int argc, char* argv[] )
       cosTotal += g.ObtenerCosto( ruta[ i ], ruta[ i + 1 ] );
     std::cout << cosTotal << std::endl;
 
-    //std::cout << "Comparacion de Prim con Dijkstra: ";
-
   }
+
+  std::cout << "Comparacion de Prim con Dijkstra: ";
   
 
-  /* TODO # 8: Imprimir el informe de Dijkstra (mismo fomato que informe de Prim)
-   */
-  g.mostrarMatrizAdyacencia();
+  // TODO # 8: Imprimir el informe de Dijkstra (mismo fomato que informe de Prim)
+   
+ 
 
   return( 0 );
 }
