@@ -73,7 +73,7 @@ template <class T, class U>
 int Grafo<T, U>::buscarVerticeIndice(T vert) {
 	int indice = -1;
 	for (int i = 0; i < cantVertices(); i++) {
-		if (vertices[i] == vert) {
+		if (vertices[i].X == vert.X && vertices[i].Y == vert.Y) {
 			indice = i;
 		}
 	}
@@ -313,62 +313,49 @@ void Grafo<T,U>::mostrarMatrizAdyacencia(){
 
 template <class T, class U>
 std::vector<std::vector<unsigned long>>Grafo<T,U>::prim(unsigned long ori){
-	// Crear un conjunto para almacenar los vértices incluidos en el árbol de expansión mínima.
-    std::set<T> arbolExpMin;
-    
-    // Crear una estructura para almacenar las aristas del árbol de expansión mínima y sus costos.
-    std::vector<std::pair<T, T>> aristasExpMin;
-    std::vector<U> costosExpMin;
+	 // Crear un vector para almacenar los vértices ya incluidos en el árbol de expansión mínimo.
+    std::vector<bool> incluido(vertices.size(), false);
 
-    // Crear una cola de prioridad para almacenar las aristas con sus respectivos costos.
-    std::priority_queue<std::pair<U, std::pair<T, T>>> cola_prioridad;
+    // Crear un vector para almacenar los vértices padre en el árbol de expansión mínimo.
+    std::vector<unsigned long> padre(vertices.size(), 0);
 
-    // Insertar el vértice inicial en el conjunto.
-    arbolExpMin.insert(vertice);
+    // Crear un vector para almacenar los costos de las aristas hacia los vértices ya incluidos en el árbol.
+    std::vector<U> costoMinimo(vertices.size(), std::numeric_limits<U>::max());
 
-    // Insertar las aristas del vértice inicial en la cola de prioridad.
-    for (int i = 0; i < matriz_adyacencia.size(); i++) {
-        if (vertices[i] == vertice) {
-            for (int j = 0; j < matriz_adyacencia[i].size(); j++) {
-                if (matriz_adyacencia[i][j] != U() && vertices[j] != vertice) {
-                    cola_prioridad.push(std::make_pair(-matriz_adyacencia[i][j], std::make_pair(vertice, vertices[j])));
-                }
+    // Almacenar el vértice de origen y establecer su costo mínimo en 0.
+    costoMinimo[ori] = 0;
+
+    // Crear un vector para almacenar el árbol de expansión mínimo.
+    std::vector<std::vector<unsigned long>> arbolExpMin(vertices.size());
+
+    for (int i = 0; i < vertices.size(); ++i) {
+        unsigned long u = -1;
+        // Encontrar el vértice con el costo mínimo no incluido en el árbol.
+        for (unsigned long j = 0; j < vertices.size(); ++j) {
+            if (!incluido[j] && (u == -1 || costoMinimo[j] < costoMinimo[u])) {
+                u = j;
             }
-            break;
         }
-    }
 
-    while (!cola_prioridad.empty()) {
-        U costo = -cola_prioridad.top().first;
-        T origen = cola_prioridad.top().second.first;
-        T destino = cola_prioridad.top().second.second;
-        cola_prioridad.pop();
+        // Marcar el vértice u como incluido en el árbol.
+        incluido[u] = true;
 
-        if (arbolExpMin.find(destino) == arbolExpMin.end()) {
-            // Si el destino no está en el árbol de expansión mínima, lo agregamos.
-            arbolExpMin.insert(destino);
-            aristasExpMin.push_back(std::make_pair(origen, destino));
-            costosExpMin.push_back(costo);
+        // Agregar la arista al árbol de expansión mínimo.
+        if (padre[u] != u) {
+            arbolExpMin[padre[u]].push_back(u);
+            arbolExpMin[u].push_back(padre[u]);
+        }
 
-            // Insertar las aristas del destino en la cola de prioridad.
-            for (int i = 0; i < matriz_adyacencia.size(); i++) {
-                if (vertices[i] == destino) {
-                    for (int j = 0; j < matriz_adyacencia[i].size(); j++) {
-                        if (matriz_adyacencia[i][j] != U() && arbolExpMin.find(vertices[j]) == arbolExpMin.end()) {
-                            cola_prioridad.push(std::make_pair(-matriz_adyacencia[i][j], std::make_pair(destino, vertices[j])));
-                        }
-                    }
-                    break;
-                }
+        // Actualizar los costos mínimos y los vértices padres.
+        for (unsigned long v = 0; v < vertices.size(); ++v) {
+            if (!incluido[v] && matriz_adyacencia[u][v] < costoMinimo[v]) {
+                costoMinimo[v] = matriz_adyacencia[u][v];
+                padre[v] = u;
             }
         }
     }
 
-    // Imprimir las aristas utilizadas en el árbol de expansión mínima junto con sus costos.
-    for (size_t i = 0; i < aristasExpMin.size(); i++) {
-        std::cout << "Arista: " << aristasExpMin[i].first << " - " << aristasExpMin[i].second << " | Costo: " << costosExpMin[i] << std::endl;
-    }
-	
+    return arbolExpMin;
 }
 
 template <class T, class U>

@@ -107,7 +107,7 @@ int main( int argc, char* argv[] )
 
   // TODO # 6: Encontrar las rutas de costo minimo usando los algoritmos requeridos
   TCaminos caminosPrim = g.prim( 0 );
-  TCaminos caminosDijkstra = g.dijkstra( 0 );
+  //TCaminos caminosDijkstra = g.dijkstra( 0 );
   
 
   // TODO # 7: Imprimir el informe de Prim
@@ -130,7 +130,7 @@ int main( int argc, char* argv[] )
       cosTotal += g.ObtenerCosto( ruta[ i ], ruta[ i + 1 ] );
     std::cout << cosTotal << std::endl;
 
-    std::cout << "Comparacion de Prim con Dijkstra: ";
+    //std::cout << "Comparacion de Prim con Dijkstra: ";
 
   }
   
