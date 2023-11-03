@@ -339,19 +339,18 @@ std::vector<std::vector<unsigned long>>Grafo<T,U>::prim(unsigned long ori){
         }
     }
 
-    std::vector<std::vector<unsigned long>> mst(n);
+    std::vector<std::vector<unsigned long>> rutaPrim(n);
     for (unsigned long i = 0; i < n; ++i) {
         if (prev[i] != std::numeric_limits<unsigned long>::max() || i == ori) {
             unsigned long nodo = i;
             while (nodo != std::numeric_limits<unsigned long>::max()) {
-                mst[i].push_back(nodo);
+                rutaPrim[i].push_back(nodo);
                 nodo = prev[nodo];
             }
-            // std::reverse(mst[i].begin(), mst[i].end());
         }
     }
 
-    return mst;
+    return rutaPrim;
 }
 
 template <class T, class U>
@@ -362,7 +361,7 @@ std::vector<std::vector<unsigned long>> Grafo<T,U>::dijkstra(unsigned long verti
 	//Se utilizará -1 para representar vacio e infinito
 
 	//Inicialización de vectores para hacer Dijkstra
-	std::vector<unsigned long> dist;
+	std::vector<float> dist;
 	std::vector<unsigned long> pred;
 	std::vector<unsigned long> S;
 	std::vector<unsigned long> Q;
