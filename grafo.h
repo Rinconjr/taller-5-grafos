@@ -17,40 +17,25 @@ class Grafo {
         void setAristas(std::vector<std::vector <U>> a);
         std::vector<T> getVertices();
         std::vector<std::vector <U>> getAristas();
-
         int cantVertices();
         int cantAristas();
-
         bool buscarVertice(T vert);
+        T ObtenerVertice(int indice);
         int buscarVerticeIndice(T vert);
         bool insertarVertice(T vert);
         bool eliminarVertice(T vert);
-        
         bool insertarArista(long ori, long des, U cos);
         bool buscarArista(T ori, T des); 
         U ObtenerCosto(unsigned long ori, unsigned long des);
         bool eliminarArista(T ori, T des);
-
         void recorridoPlano();
         void dfs(T vertice);
         void bfs(T vertice);
-
         std::vector<T> componenteVertice(T vertice);
-        std::vector<std::vector<unsigned long>>prim(unsigned long ori);
-
         void mostrarMatrizAdyacencia();
-
-        T ObtenerVertice(int indice);
-
-        //Implementar recorridos (Prioridad)
-        //Recorrido PRIM
-        //Recorrido Dijkstra
+        std::vector<std::vector<unsigned long>>prim(unsigned long ori);
         std::vector<std::vector<unsigned long>> dijkstra(unsigned long vertice);
-
-        //Recorrido Euler
-        //Recorrido Hamilton
 };
-
 
 #include "grafo.hxx"
 
