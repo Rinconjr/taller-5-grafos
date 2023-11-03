@@ -353,6 +353,7 @@ std::vector<std::vector<unsigned long>>Grafo<T,U>::prim(unsigned long ori){
     return rutaPrim;
 }
 
+/*
 template <class T, class U>
 std::vector<std::vector<unsigned long>> Grafo<T,U>::dijkstra(unsigned long vertice){
 	//Falta que en el resultado se imprima el numero del nodo en pred, en vez del consecutivo
@@ -427,7 +428,7 @@ std::vector<std::vector<unsigned long>> Grafo<T,U>::dijkstra(unsigned long verti
 			}
 		}
 		
-		/*
+		
 		//Prints de cada paso para verificar que todo esta en orden
 		std::cout << "\nDist ";
 		for (int a: dist)
@@ -451,7 +452,7 @@ std::vector<std::vector<unsigned long>> Grafo<T,U>::dijkstra(unsigned long verti
 		}
 
 		std::cout << "\n==========" << std::endl;
-		*/
+		
 	}
 
 	std::cout << "La secuencia hasta cada nodo desde el nodo " << vertice << " con el menor costo " << std::endl;
@@ -501,4 +502,48 @@ std::vector<std::vector<unsigned long>> Grafo<T,U>::dijkstra(unsigned long verti
 	}
 
 	return rutaVertices;
+}
+*/
+
+// Este sirve pero intentemos usar el de nosotros
+template <class T, class U>
+std::vector<std::vector<unsigned long>> Grafo<T,U>::dijkstra(unsigned long vertice) {
+    int n = vertices.size();  // Número de nodos
+
+    std::vector<U> dist(n, std::numeric_limits<U>::max());  // Costo mínimo desde el vértice de origen hasta el nodo i
+    std::vector<unsigned long> pred(n, std::numeric_limits<unsigned long>::max());  // Nodo anterior en el camino óptimo
+    std::vector<bool> inMST(n, false);  // Si el nodo i está en el MST
+
+    std::priority_queue<std::pair<U, unsigned long>, std::vector<std::pair<U, unsigned long>>, std::greater<std::pair<U, unsigned long>>> pq;
+    dist[vertice] = 0;
+    pq.push({0, vertice});
+
+    while (!pq.empty()) {
+        unsigned long u = pq.top().second;
+        pq.pop();
+
+        inMST[u] = true;
+
+        for (unsigned long v = 0; v < n; ++v) {
+            if (matriz_adyacencia[u][v] && !inMST[v] && dist[u] + matriz_adyacencia[u][v] < dist[v]) {
+                dist[v] = dist[u] + matriz_adyacencia[u][v];
+                pq.push({dist[v], v});
+                pred[v] = u;
+            }
+        }
+    }
+
+    std::vector<std::vector<unsigned long>> rutaDijkstra(n);
+
+    for (unsigned long i = 0; i < n; ++i) {
+        if (pred[i] != std::numeric_limits<unsigned long>::max() || i == vertice) {
+            unsigned long nodo = i;
+            while (nodo != std::numeric_limits<unsigned long>::max()) {
+                rutaDijkstra[i].push_back(nodo);
+                nodo = pred[nodo];
+            }
+        }
+    }
+
+    return rutaDijkstra;
 }
